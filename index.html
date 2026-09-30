@@ -1,0 +1,3037 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>TravelMate - Travel Planning & Booking</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* ================= NAVBAR ================= */
+
+        nav {
+            width: 100%;
+            height: 70px;
+            background: #ffffff;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 6%;
+
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #087f8c;
+        }
+
+        .logo span {
+            color: #ff7800;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #087f8c;
+        }
+
+        .auth-area {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-area {
+            display: none;
+            align-items: center;
+        }
+
+        .logged-user {
+            color: #087f8c;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* ================= BUTTONS ================= */
+
+        .btn {
+            padding: 11px 18px;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .primary {
+            background: #087f8c;
+            color: white;
+        }
+
+        .primary:hover {
+            background: #056b75;
+        }
+
+        .orange {
+            background: #ff7800;
+            color: white;
+        }
+
+        .orange:hover {
+            background: #dc6500;
+        }
+
+        .danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .danger:hover {
+            background: #bb2d3b;
+        }
+
+        .green {
+            background: #198754;
+            color: white;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 570px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            text-align: center;
+
+            color: white;
+
+            padding: 40px 20px;
+
+            background:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.50),
+                    rgba(0, 0, 0, 0.50)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80"
+                );
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 55px;
+            margin-bottom: 18px;
+        }
+
+        .hero p {
+            font-size: 21px;
+            margin-bottom: 30px;
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-box {
+            background: white;
+            padding: 12px;
+            border-radius: 10px;
+
+            display: flex;
+            gap: 10px;
+
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .search-box input,
+        .search-box select {
+            flex: 1;
+            padding: 13px;
+
+            border: 1px solid #ddd;
+            border-radius: 6px;
+
+            outline: none;
+        }
+
+        /* ================= SECTION ================= */
+
+        .section {
+            padding: 65px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 35px;
+            color: #102a43;
+        }
+
+        .section-title p {
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* ================= DESTINATIONS ================= */
+
+        .destination-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(270px, 1fr));
+
+            gap: 25px;
+        }
+
+        .destination-card {
+            background: white;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+
+            transition: 0.3s;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-content h3 {
+            font-size: 23px;
+            margin-bottom: 8px;
+        }
+
+        .location {
+            color: #777;
+            margin-bottom: 8px;
+        }
+
+        .rating {
+            color: #ff9800;
+            margin-bottom: 10px;
+        }
+
+        .card-content p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .price {
+            color: #087f8c;
+            font-size: 21px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        /* ================= FEATURES ================= */
+
+        .features {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(220px, 1fr));
+
+            gap: 25px;
+        }
+
+        .feature {
+            background: white;
+            text-align: center;
+
+            padding: 30px 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .feature-icon {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #777;
+            line-height: 1.5;
+        }
+
+        /* ================= PLANNER ================= */
+
+        .planner-section {
+            background: #eaf8fa;
+        }
+
+        .form-container {
+            max-width: 950px;
+
+            margin: auto;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+
+            gap: 7px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 6px;
+
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        /* ================= ITINERARY ================= */
+
+        #itinerary {
+            margin-top: 30px;
+        }
+
+        .itinerary-day {
+            background: #f4f7fb;
+
+            padding: 18px;
+
+            margin-bottom: 12px;
+
+            border-left:
+                5px solid #087f8c;
+
+            border-radius: 7px;
+        }
+
+        .itinerary-day h3 {
+            color: #087f8c;
+            margin-bottom: 8px;
+        }
+
+        .itinerary-day p {
+            margin-top: 5px;
+            color: #555;
+        }
+
+        /* ================= BOOKINGS ================= */
+
+        .table-container {
+            overflow-x: auto;
+
+            background: white;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 14px;
+
+            text-align: left;
+
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #087f8c;
+            color: white;
+        }
+
+        .status {
+            padding: 6px 10px;
+
+            border-radius: 15px;
+
+            font-size: 13px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        /* ================= MODAL ================= */
+
+        .modal {
+            display: none;
+
+            position: fixed;
+
+            inset: 0;
+
+            background: rgba(0, 0, 0, 0.65);
+
+            z-index: 2000;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .modal-box {
+            width: 100%;
+            max-width: 470px;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            position: relative;
+        }
+
+        .modal-box h2 {
+            color: #087f8c;
+
+            margin-bottom: 20px;
+        }
+
+        .modal-box label {
+            display: block;
+
+            margin-bottom: 5px;
+
+            font-weight: bold;
+        }
+
+        .modal-box input {
+            width: 100%;
+
+            padding: 13px;
+
+            margin-bottom: 15px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 6px;
+
+            outline: none;
+        }
+
+        .close {
+            position: absolute;
+
+            right: 20px;
+            top: 15px;
+
+            font-size: 28px;
+
+            cursor: pointer;
+
+            color: #777;
+        }
+
+        .close:hover {
+            color: #222;
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: #102a43;
+
+            color: white;
+
+            padding: 40px 7%;
+
+            text-align: center;
+        }
+
+        footer h2 {
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #cbd5e1;
+
+            margin: 7px 0;
+        }
+
+        /* ================= TOAST ================= */
+
+        #toast {
+            visibility: hidden;
+
+            min-width: 280px;
+
+            background: #222;
+
+            color: white;
+
+            text-align: center;
+
+            border-radius: 7px;
+
+            padding: 15px 20px;
+
+            position: fixed;
+
+            right: 25px;
+            bottom: 25px;
+
+            z-index: 5000;
+        }
+
+        #toast.show {
+            visibility: visible;
+
+            animation:
+                toastIn 0.3s,
+                toastOut 0.3s 2.7s;
+        }
+
+        @keyframes toastIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        @keyframes toastOut {
+
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 850px) {
+
+            nav {
+                padding: 0 3%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 40px;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+        }
+
+        @media (max-width: 500px) {
+
+            .logo {
+                font-size: 22px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            .auth-area,
+            .user-area {
+                font-size: 12px;
+            }
+
+            .logged-user {
+                display: none;
+            }
+
+            .btn {
+                padding: 9px 12px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- ==================================================
+     NAVIGATION
+================================================== -->
+
+<nav>
+
+    <div class="logo">
+        Travel<span>Mate</span>
+    </div>
+
+
+    <ul class="nav-links">
+
+        <li>
+            <a onclick="scrollToSection('home')">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a onclick="scrollToSection('destinations')">
+                Destinations
+            </a>
+        </li>
+
+        <li>
+            <a onclick="scrollToSection('planner')">
+                Planner
+            </a>
+        </li>
+
+        <li>
+            <a onclick="scrollToSection('bookings')">
+                My Bookings
+            </a>
+        </li>
+
+        <li>
+            <a onclick="scrollToSection('features')">
+                Features
+            </a>
+        </li>
+
+    </ul>
+
+
+    <!-- BEFORE LOGIN -->
+
+    <div
+        class="auth-area"
+        id="authButtons"
+    >
+
+        <button
+            class="btn primary"
+            onclick="openModal('loginModal')"
+        >
+            Login
+        </button>
+
+        <button
+            class="btn orange"
+            onclick="openModal('registerModal')"
+        >
+            Register
+        </button>
+
+    </div>
+
+
+    <!-- AFTER LOGIN -->
+
+    <div
+        class="user-area"
+        id="userButtons"
+    >
+
+        <span
+            class="logged-user"
+            id="loggedUser"
+        >
+        </span>
+
+        <button
+            class="btn danger"
+            onclick="logout()"
+        >
+            Logout
+        </button>
+
+    </div>
+
+</nav>
+
+
+<!-- ==================================================
+     HERO
+================================================== -->
+
+<section
+    class="hero"
+    id="home"
+>
+
+    <div class="hero-content">
+
+        <h1>
+            Explore The World
+        </h1>
+
+        <p>
+            Plan your trip, discover amazing destinations
+            and book your dream vacation with TravelMate.
+        </p>
+
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search destination..."
+            >
+
+            <input
+                type="date"
+                id="searchDate"
+            >
+
+            <select id="travellers">
+
+                <option value="1">
+                    1 Traveller
+                </option>
+
+                <option value="2">
+                    2 Travellers
+                </option>
+
+                <option value="3">
+                    3 Travellers
+                </option>
+
+                <option value="4">
+                    4 Travellers
+                </option>
+
+                <option value="5">
+                    5+ Travellers
+                </option>
+
+            </select>
+
+            <button
+                class="btn orange"
+                onclick="searchDestination()"
+            >
+                Search
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     DESTINATIONS
+================================================== -->
+
+<section
+    class="section"
+    id="destinations"
+>
+
+    <div class="section-title">
+
+        <h2>
+            Popular Destinations
+        </h2>
+
+        <p>
+            Choose your next destination.
+        </p>
+
+    </div>
+
+
+    <div
+        class="destination-grid"
+        id="destinationGrid"
+    >
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     FEATURES
+================================================== -->
+
+<section
+    class="section"
+    id="features"
+>
+
+    <div class="section-title">
+
+        <h2>
+            Why Choose TravelMate?
+        </h2>
+
+        <p>
+            Everything you need for your travel.
+        </p>
+
+    </div>
+
+
+    <div class="features">
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🌍
+            </div>
+
+            <h3>
+                Worldwide Destinations
+            </h3>
+
+            <p>
+                Explore beautiful destinations
+                around the world.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                📅
+            </div>
+
+            <h3>
+                Easy Planning
+            </h3>
+
+            <p>
+                Create personalized travel
+                itineraries.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🎫
+            </div>
+
+            <h3>
+                Easy Booking
+            </h3>
+
+            <p>
+                Book your trip quickly and
+                conveniently.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">
+                🔒
+            </div>
+
+            <h3>
+                Secure Account
+            </h3>
+
+            <p>
+                Manage your profile and
+                bookings securely.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     TRAVEL PLANNER
+================================================== -->
+
+<section
+    class="section planner-section"
+    id="planner"
+>
+
+    <div class="section-title">
+
+        <h2>
+            Travel Planner
+        </h2>
+
+        <p>
+            Create your personalized itinerary.
+        </p>
+
+    </div>
+
+
+    <div class="form-container">
+
+        <form id="plannerForm">
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Destination
+                    </label>
+
+                    <input
+                        type="text"
+                        id="planDestination"
+                        placeholder="Example: Goa"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Number of Days
+                    </label>
+
+                    <input
+                        type="number"
+                        id="planDays"
+                        min="1"
+                        max="30"
+                        value="3"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Travel Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="planDate"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Travel Type
+                    </label>
+
+                    <select id="travelType">
+
+                        <option>
+                            Adventure
+                        </option>
+
+                        <option>
+                            Family
+                        </option>
+
+                        <option>
+                            Romantic
+                        </option>
+
+                        <option>
+                            Solo
+                        </option>
+
+                        <option>
+                            Luxury
+                        </option>
+
+                        <option>
+                            Business
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Activities
+                    </label>
+
+                    <textarea
+                        id="activities"
+                        placeholder="Example: Beach, sightseeing, shopping..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="full">
+
+                    <button
+                        class="btn primary"
+                        type="submit"
+                    >
+                        Generate Itinerary
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+
+        <div id="itinerary"></div>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     MY BOOKINGS
+================================================== -->
+
+<section
+    class="section"
+    id="bookings"
+>
+
+    <div class="section-title">
+
+        <h2>
+            My Bookings
+        </h2>
+
+        <p>
+            View and manage your travel bookings.
+        </p>
+
+    </div>
+
+
+    <div class="table-container">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Booking ID
+                    </th>
+
+                    <th>
+                        Destination
+                    </th>
+
+                    <th>
+                        Date
+                    </th>
+
+                    <th>
+                        Travellers
+                    </th>
+
+                    <th>
+                        Amount
+                    </th>
+
+                    <th>
+                        Status
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="bookingTable">
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ==================================================
+     FOOTER
+================================================== -->
+
+<footer>
+
+    <h2>
+        TravelMate
+    </h2>
+
+    <p>
+        Travel Planning & Booking System
+    </p>
+
+    <p>
+        © 2026 TravelMate. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+<!-- ==================================================
+     LOGIN MODAL
+================================================== -->
+
+<div
+    class="modal"
+    id="loginModal"
+>
+
+    <div class="modal-box">
+
+        <span
+            class="close"
+            onclick="closeModal('loginModal')"
+        >
+            &times;
+        </span>
+
+
+        <h2>
+            User Login
+        </h2>
+
+
+        <form id="loginForm">
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter email"
+                required
+            >
+
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter password"
+                required
+            >
+
+
+            <button
+                class="btn primary"
+                style="width:100%;"
+                type="submit"
+            >
+                Login
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     REGISTER MODAL
+================================================== -->
+
+<div
+    class="modal"
+    id="registerModal"
+>
+
+    <div class="modal-box">
+
+        <span
+            class="close"
+            onclick="closeModal('registerModal')"
+        >
+            &times;
+        </span>
+
+
+        <h2>
+            Create Account
+        </h2>
+
+
+        <form id="registerForm">
+
+            <label>
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="registerName"
+                placeholder="Enter your name"
+                required
+            >
+
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="registerEmail"
+                placeholder="Enter email"
+                required
+            >
+
+
+            <label>
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="registerPassword"
+                placeholder="Create password"
+                required
+            >
+
+
+            <label>
+                Confirm Password
+            </label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm password"
+                required
+            >
+
+
+            <button
+                class="btn primary"
+                style="width:100%;"
+                type="submit"
+            >
+                Register
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     BOOKING MODAL
+================================================== -->
+
+<div
+    class="modal"
+    id="bookingModal"
+>
+
+    <div class="modal-box">
+
+        <span
+            class="close"
+            onclick="closeModal('bookingModal')"
+        >
+            &times;
+        </span>
+
+
+        <h2>
+            Book Your Trip
+        </h2>
+
+
+        <form id="bookingForm">
+
+
+            <input
+                type="hidden"
+                id="bookingDestination"
+            >
+
+
+            <input
+                type="hidden"
+                id="bookingPrice"
+            >
+
+
+            <label>
+                Full Name
+            </label>
+
+            <input
+                type="text"
+                id="bookingName"
+                placeholder="Enter your name"
+                required
+            >
+
+
+            <label>
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="bookingEmail"
+                placeholder="Enter your email"
+                required
+            >
+
+
+            <label>
+                Travel Date
+            </label>
+
+            <input
+                type="date"
+                id="bookingDate"
+                required
+            >
+
+
+            <label>
+                Number of Travellers
+            </label>
+
+            <input
+                type="number"
+                id="bookingTravellers"
+                min="1"
+                value="1"
+                required
+            >
+
+
+            <button
+                class="btn primary"
+                style="width:100%;"
+                type="submit"
+            >
+                Confirm Booking
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ==================================================
+     TOAST
+================================================== -->
+
+<div id="toast">
+</div>
+
+
+<!-- ==================================================
+     JAVASCRIPT
+================================================== -->
+
+<script>
+
+
+/* ==================================================
+   DESTINATION DATA
+================================================== */
+
+const defaultDestinations = [
+
+    {
+        name: "Goa",
+        country: "India",
+        price: 8999,
+        rating: 4.8,
+
+        description:
+            "Enjoy beautiful beaches, nightlife, water sports and amazing sunsets.",
+
+        image:
+            "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80"
+    },
+
+
+    {
+        name: "Manali",
+        country: "India",
+        price: 12499,
+        rating: 4.7,
+
+        description:
+            "Experience mountains, snow, adventure and peaceful valleys.",
+
+        image:
+            "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80"
+    },
+
+
+    {
+        name: "Paris",
+        country: "France",
+        price: 75000,
+        rating: 4.9,
+
+        description:
+            "Visit the Eiffel Tower, museums, cafes and romantic streets.",
+
+        image:
+            "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80"
+    },
+
+
+    {
+        name: "Dubai",
+        country: "UAE",
+        price: 45000,
+        rating: 4.8,
+
+        description:
+            "Experience luxury shopping, skyscrapers, desert safaris and beaches.",
+
+        image:
+            "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80"
+    },
+
+
+    {
+        name: "Bali",
+        country: "Indonesia",
+        price: 38000,
+        rating: 4.9,
+
+        description:
+            "Explore temples, beaches, waterfalls and tropical landscapes.",
+
+        image:
+            "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80"
+    },
+
+
+    {
+        name: "London",
+        country: "United Kingdom",
+        price: 80000,
+        rating: 4.7,
+
+        description:
+            "Explore Big Ben, London Bridge, museums and historic landmarks.",
+
+        image:
+            "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=800&q=80"
+    }
+
+];
+
+
+/* ==================================================
+   LOAD DATA
+================================================== */
+
+let destinations =
+    JSON.parse(
+        localStorage.getItem("travelMateDestinations")
+    ) || defaultDestinations;
+
+
+let bookings =
+    JSON.parse(
+        localStorage.getItem("travelMateBookings")
+    ) || [];
+
+
+/* ==================================================
+   NAVIGATION
+================================================== */
+
+function scrollToSection(id) {
+
+    const section =
+        document.getElementById(id);
+
+    if (section) {
+
+        section.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+
+}
+
+
+/* ==================================================
+   MODAL
+================================================== */
+
+function openModal(id) {
+
+    document.getElementById(id).style.display = "flex";
+
+}
+
+
+function closeModal(id) {
+
+    document.getElementById(id).style.display = "none";
+
+}
+
+
+/* ==================================================
+   CLOSE MODAL WHEN CLICKING OUTSIDE
+================================================== */
+
+window.addEventListener(
+    "click",
+    function(event) {
+
+        if (
+            event.target.classList.contains("modal")
+        ) {
+
+            event.target.style.display = "none";
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   TOAST
+================================================== */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("toast");
+
+    toast.innerText = message;
+
+    toast.classList.add("show");
+
+    setTimeout(
+        function() {
+
+            toast.classList.remove("show");
+
+        },
+        3000
+    );
+
+}
+
+
+/* ==================================================
+   AUTH UI
+================================================== */
+
+function updateAuthUI() {
+
+    const loggedInUser =
+        localStorage.getItem("travelMateLoggedInUser");
+
+
+    const authButtons =
+        document.getElementById("authButtons");
+
+
+    const userButtons =
+        document.getElementById("userButtons");
+
+
+    const loggedUser =
+        document.getElementById("loggedUser");
+
+
+    if (loggedInUser) {
+
+        /*
+         * USER IS LOGGED IN
+         *
+         * Hide:
+         * Login
+         * Register
+         *
+         * Show:
+         * Username
+         * Logout
+         */
+
+        authButtons.style.display = "none";
+
+        userButtons.style.display = "flex";
+
+        loggedUser.innerText =
+            "👤 " + loggedInUser;
+
+    }
+
+    else {
+
+        /*
+         * USER IS LOGGED OUT
+         *
+         * Show:
+         * Login
+         * Register
+         *
+         * Hide:
+         * Username
+         * Logout
+         */
+
+        authButtons.style.display = "flex";
+
+        userButtons.style.display = "none";
+
+        loggedUser.innerText = "";
+
+    }
+
+}
+
+
+/* ==================================================
+   REGISTER
+================================================== */
+
+document
+    .getElementById("registerForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document
+                    .getElementById("registerName")
+                    .value
+                    .trim();
+
+
+            const email =
+                document
+                    .getElementById("registerEmail")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+
+            const password =
+                document
+                    .getElementById("registerPassword")
+                    .value;
+
+
+            const confirmPassword =
+                document
+                    .getElementById("confirmPassword")
+                    .value;
+
+
+            if (password !== confirmPassword) {
+
+                showToast(
+                    "Passwords do not match."
+                );
+
+                return;
+
+            }
+
+
+            if (password.length < 6) {
+
+                showToast(
+                    "Password must contain at least 6 characters."
+                );
+
+                return;
+
+            }
+
+
+            const existingUser =
+                JSON.parse(
+                    localStorage.getItem(
+                        "travelMateUser"
+                    )
+                );
+
+
+            if (
+                existingUser &&
+                existingUser.email === email
+            ) {
+
+                showToast(
+                    "This email is already registered."
+                );
+
+                return;
+
+            }
+
+
+            const user = {
+
+                name: name,
+
+                email: email,
+
+                password: password
+
+            };
+
+
+            localStorage.setItem(
+                "travelMateUser",
+                JSON.stringify(user)
+            );
+
+
+            closeModal("registerModal");
+
+
+            this.reset();
+
+
+            showToast(
+                "Registration successful. Please login."
+            );
+
+
+            setTimeout(
+                function() {
+
+                    openModal("loginModal");
+
+                },
+                800
+            );
+
+        }
+    );
+
+
+/* ==================================================
+   LOGIN
+================================================== */
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document
+                    .getElementById("loginEmail")
+                    .value
+                    .trim()
+                    .toLowerCase();
+
+
+            const password =
+                document
+                    .getElementById("loginPassword")
+                    .value;
+
+
+            const user =
+                JSON.parse(
+                    localStorage.getItem(
+                        "travelMateUser"
+                    )
+                );
+
+
+            if (!user) {
+
+                showToast(
+                    "No account found. Please register first."
+                );
+
+                return;
+
+            }
+
+
+            if (
+                user.email === email &&
+                user.password === password
+            ) {
+
+                /*
+                 * CREATE LOGIN SESSION
+                 */
+
+                localStorage.setItem(
+                    "travelMateLoggedInUser",
+                    user.email
+                );
+
+
+                localStorage.setItem(
+                    "travelMateLoggedInName",
+                    user.name
+                );
+
+
+                closeModal("loginModal");
+
+
+                this.reset();
+
+
+                /*
+                 * UPDATE NAVBAR
+                 */
+
+                updateAuthUI();
+
+
+                /*
+                 * UPDATE BOOKINGS
+                 */
+
+                renderBookings();
+
+
+                showToast(
+                    "Login successful. Welcome " +
+                    user.name +
+                    "!"
+                );
+
+            }
+
+            else {
+
+                showToast(
+                    "Invalid email or password."
+                );
+
+            }
+
+        }
+    );
+
+
+/* ==================================================
+   LOGOUT
+================================================== */
+
+function logout() {
+
+    /*
+     * Remove current login session.
+     */
+
+    localStorage.removeItem(
+        "travelMateLoggedInUser"
+    );
+
+
+    localStorage.removeItem(
+        "travelMateLoggedInName"
+    );
+
+
+    /*
+     * Change navbar back to:
+     *
+     * Login
+     * Register
+     */
+
+    updateAuthUI();
+
+
+    /*
+     * Clear booking display.
+     */
+
+    renderBookings();
+
+
+    showToast(
+        "You have been logged out successfully."
+    );
+
+}
+
+
+/* ==================================================
+   CHECK LOGIN
+================================================== */
+
+function isLoggedIn() {
+
+    return !!localStorage.getItem(
+        "travelMateLoggedInUser"
+    );
+
+}
+
+
+/* ==================================================
+   GET CURRENT USER
+================================================== */
+
+function getCurrentUser() {
+
+    return localStorage.getItem(
+        "travelMateLoggedInUser"
+    );
+
+}
+
+
+/* ==================================================
+   RENDER DESTINATIONS
+================================================== */
+
+function renderDestinations(
+    destinationList = destinations
+) {
+
+    const container =
+        document.getElementById(
+            "destinationGrid"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        destinationList.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div
+                style="
+                    grid-column:1/-1;
+                    text-align:center;
+                    padding:40px;
+                "
+            >
+
+                <h3>
+                    No destinations found.
+                </h3>
+
+                <p>
+                    Try another destination.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    destinationList.forEach(
+        function(destination) {
+
+            const originalIndex =
+                destinations.findIndex(
+                    function(item) {
+
+                        return (
+                            item.name ===
+                            destination.name
+                        );
+
+                    }
+                );
+
+
+            container.innerHTML += `
+
+                <div class="destination-card">
+
+                    <img
+                        src="${destination.image}"
+                        alt="${destination.name}"
+                    >
+
+
+                    <div class="card-content">
+
+                        <h3>
+                            ${destination.name}
+                        </h3>
+
+
+                        <div class="location">
+                            📍 ${destination.country}
+                        </div>
+
+
+                        <div class="rating">
+                            ⭐⭐⭐⭐⭐
+                            ${destination.rating}
+                        </div>
+
+
+                        <p>
+                            ${destination.description}
+                        </p>
+
+
+                        <div class="price">
+
+                            From
+                            ₹${destination.price.toLocaleString("en-IN")}
+
+                        </div>
+
+
+                        <button
+                            class="btn primary"
+                            onclick="openBooking(
+                                ${originalIndex}
+                            )"
+                        >
+                            Book Now
+                        </button>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   SEARCH
+================================================== */
+
+function searchDestination() {
+
+    const searchValue =
+        document
+            .getElementById("searchInput")
+            .value
+            .trim()
+            .toLowerCase();
+
+
+    if (searchValue === "") {
+
+        renderDestinations();
+
+        scrollToSection("destinations");
+
+        return;
+
+    }
+
+
+    const filtered =
+        destinations.filter(
+            function(destination) {
+
+                return (
+
+                    destination.name
+                        .toLowerCase()
+                        .includes(searchValue)
+
+                    ||
+
+                    destination.country
+                        .toLowerCase()
+                        .includes(searchValue)
+
+                );
+
+            }
+        );
+
+
+    renderDestinations(filtered);
+
+
+    scrollToSection("destinations");
+
+}
+
+
+/* ==================================================
+   OPEN BOOKING
+================================================== */
+
+function openBooking(index) {
+
+    /*
+     * Booking requires login.
+     */
+
+    if (!isLoggedIn()) {
+
+        showToast(
+            "Please login before booking a trip."
+        );
+
+
+        setTimeout(
+            function() {
+
+                openModal("loginModal");
+
+            },
+            700
+        );
+
+
+        return;
+
+    }
+
+
+    const destination =
+        destinations[index];
+
+
+    document
+        .getElementById(
+            "bookingDestination"
+        )
+        .value =
+        destination.name;
+
+
+    document
+        .getElementById(
+            "bookingPrice"
+        )
+        .value =
+        destination.price;
+
+
+    /*
+     * Automatically fill logged-in user's
+     * information.
+     */
+
+    const user =
+        JSON.parse(
+            localStorage.getItem(
+                "travelMateUser"
+            )
+        );
+
+
+    if (user) {
+
+        document
+            .getElementById(
+                "bookingName"
+            )
+            .value =
+            user.name;
+
+
+        document
+            .getElementById(
+                "bookingEmail"
+            )
+            .value =
+            user.email;
+
+    }
+
+
+    openModal("bookingModal");
+
+}
+
+
+/* ==================================================
+   BOOKING SUBMIT
+================================================== */
+
+document
+    .getElementById("bookingForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            if (!isLoggedIn()) {
+
+                showToast(
+                    "Please login first."
+                );
+
+                return;
+
+            }
+
+
+            const destination =
+                document
+                    .getElementById(
+                        "bookingDestination"
+                    )
+                    .value;
+
+
+            const price =
+                Number(
+                    document
+                        .getElementById(
+                            "bookingPrice"
+                        )
+                        .value
+                );
+
+
+            const name =
+                document
+                    .getElementById(
+                        "bookingName"
+                    )
+                    .value;
+
+
+            const email =
+                document
+                    .getElementById(
+                        "bookingEmail"
+                    )
+                    .value;
+
+
+            const date =
+                document
+                    .getElementById(
+                        "bookingDate"
+                    )
+                    .value;
+
+
+            const travellers =
+                Number(
+                    document
+                        .getElementById(
+                            "bookingTravellers"
+                        )
+                        .value
+                );
+
+
+            if (!date) {
+
+                showToast(
+                    "Please select a travel date."
+                );
+
+                return;
+
+            }
+
+
+            const booking = {
+
+                id:
+                    "TM" +
+                    Date.now()
+                        .toString()
+                        .slice(-6),
+
+                name:
+                    name,
+
+                email:
+                    email,
+
+                destination:
+                    destination,
+
+                date:
+                    date,
+
+                travellers:
+                    travellers,
+
+                amount:
+                    price * travellers,
+
+                status:
+                    "Pending"
+
+            };
+
+
+            bookings.push(booking);
+
+
+            localStorage.setItem(
+                "travelMateBookings",
+                JSON.stringify(bookings)
+            );
+
+
+            closeModal("bookingModal");
+
+
+            this.reset();
+
+
+            renderBookings();
+
+
+            showToast(
+                "Booking submitted successfully!"
+            );
+
+
+            scrollToSection(
+                "bookings"
+            );
+
+        }
+    );
+
+
+/* ==================================================
+   RENDER BOOKINGS
+================================================== */
+
+function renderBookings() {
+
+    const table =
+        document.getElementById(
+            "bookingTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    /*
+     * If user is logged out,
+     * don't show bookings.
+     */
+
+    if (!isLoggedIn()) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    "
+                >
+
+                    <strong>
+                        Please login to view your bookings.
+                    </strong>
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    const email =
+        getCurrentUser();
+
+
+    /*
+     * Show ONLY current user's bookings.
+     */
+
+    const userBookings =
+        bookings.filter(
+            function(booking) {
+
+                return booking.email === email;
+
+            }
+        );
+
+
+    if (userBookings.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    style="
+                        text-align:center;
+                        padding:30px;
+                    "
+                >
+
+                    No bookings found.
+
+                    <br><br>
+
+                    Book your first trip!
+
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    userBookings.forEach(
+        function(booking) {
+
+            const originalIndex =
+                bookings.findIndex(
+                    function(item) {
+
+                        return (
+                            item.id ===
+                            booking.id
+                        );
+
+                    }
+                );
+
+
+            let statusClass =
+                "status-pending";
+
+
+            if (
+                booking.status ===
+                "Confirmed"
+            ) {
+
+                statusClass =
+                    "status-confirmed";
+
+            }
+
+
+            if (
+                booking.status ===
+                "Cancelled"
+            ) {
+
+                statusClass =
+                    "status-cancelled";
+
+            }
+
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${booking.id}
+                    </td>
+
+
+                    <td>
+                        ${booking.destination}
+                    </td>
+
+
+                    <td>
+                        ${booking.date}
+                    </td>
+
+
+                    <td>
+                        ${booking.travellers}
+                    </td>
+
+
+                    <td>
+                        ₹${booking.amount.toLocaleString("en-IN")}
+                    </td>
+
+
+                    <td>
+
+                        <span
+                            class="
+                                status
+                                ${statusClass}
+                            "
+                        >
+                            ${booking.status}
+                        </span>
+
+                    </td>
+
+
+                    <td>
+
+                        ${
+                            booking.status !==
+                            "Cancelled"
+
+                            ?
+
+                            `
+                            <button
+                                class="btn danger"
+                                onclick="
+                                    cancelBooking(
+                                        ${originalIndex}
+                                    )
+                                "
+                            >
+                                Cancel
+                            </button>
+                            `
+
+                            :
+
+                            `
+                            <span>
+                                Cancelled
+                            </span>
+                            `
+                        }
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+}
+
+
+/* ==================================================
+   CANCEL BOOKING
+================================================== */
+
+function cancelBooking(index) {
+
+    if (!isLoggedIn()) {
+
+        showToast(
+            "Please login first."
+        );
+
+        return;
+
+    }
+
+
+    const booking =
+        bookings[index];
+
+
+    const currentUser =
+        getCurrentUser();
+
+
+    /*
+     * Security check:
+     * User can only cancel their own booking.
+     */
+
+    if (
+        booking.email !==
+        currentUser
+    ) {
+
+        showToast(
+            "You cannot cancel this booking."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        booking.status ===
+        "Cancelled"
+    ) {
+
+        return;
+
+    }
+
+
+    const confirmation =
+        confirm(
+            "Are you sure you want to cancel this booking?"
+        );
+
+
+    if (!confirmation) {
+
+        return;
+
+    }
+
+
+    bookings[index].status =
+        "Cancelled";
+
+
+    localStorage.setItem(
+        "travelMateBookings",
+        JSON.stringify(bookings)
+    );
+
+
+    renderBookings();
+
+
+    showToast(
+        "Booking cancelled successfully."
+    );
+
+}
+
+
+/* ==================================================
+   TRAVEL PLANNER
+================================================== */
+
+document
+    .getElementById("plannerForm")
+    .addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            if (!isLoggedIn()) {
+
+                showToast(
+                    "Please login to create your itinerary."
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        openModal(
+                            "loginModal"
+                        );
+
+                    },
+                    700
+                );
+
+
+                return;
+
+            }
+
+
+            const destination =
+                document
+                    .getElementById(
+                        "planDestination"
+                    )
+                    .value;
+
+
+            const days =
+                Number(
+                    document
+                        .getElementById(
+                            "planDays"
+                        )
+                        .value
+                );
+
+
+            const date =
+                document
+                    .getElementById(
+                        "planDate"
+                    )
+                    .value;
+
+
+            const travelType =
+                document
+                    .getElementById(
+                        "travelType"
+                    )
+                    .value;
+
+
+            const activities =
+                document
+                    .getElementById(
+                        "activities"
+                    )
+                    .value;
+
+
+            const itinerary =
+                document.getElementById(
+                    "itinerary"
+                );
+
+
+            itinerary.innerHTML = `
+
+                <h2
+                    style="
+                        margin-bottom:20px;
+                        color:#087f8c;
+                    "
+                >
+
+                    ${days}-Day
+                    ${travelType}
+                    Trip to
+                    ${destination}
+
+                </h2>
+
+            `;
+
+
+            const defaultActivities = [
+
+                "Explore local tourist attractions",
+
+                "Enjoy local food and sightseeing",
+
+                "Visit famous landmarks",
+
+                "Shopping and cultural activities",
+
+                "Adventure and outdoor activities"
+
+            ];
+
+
+            for (
+                let day = 1;
+                day <= days;
+                day++
+            ) {
+
+                const activity =
+                    activities.trim() !== ""
+                    ?
+                    activities
+                    :
+                    defaultActivities[
+                        (day - 1) %
+                        defaultActivities.length
+                    ];
+
+
+                itinerary.innerHTML += `
+
+                    <div
+                        class="itinerary-day"
+                    >
+
+                        <h3>
+                            Day ${day}
+                        </h3>
+
+
+                        <p>
+                            📅
+                            ${date}
+                        </p>
+
+
+                        <p>
+                            📍
+                            ${destination}
+                        </p>
+
+
+                        <p>
+                            🎯
+                            ${activity}
+                        </p>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            showToast(
+                "Itinerary generated successfully!"
+            );
+
+        }
+    );
+
+
+/* ==================================================
+   SET MINIMUM DATE
+================================================== */
+
+const today =
+    new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+document.getElementById(
+    "searchDate"
+).min = today;
+
+
+document.getElementById(
+    "planDate"
+).min = today;
+
+
+document.getElementById(
+    "bookingDate"
+).min = today;
+
+
+/* ==================================================
+   INITIALIZE
+================================================== */
+
+renderDestinations();
+
+renderBookings();
+
+updateAuthUI();
+
+
+</script>
+
+
+</body>
+
+</html>
